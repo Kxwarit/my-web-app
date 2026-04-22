@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Order</title>
+</head>
+<body>
+
+<h2>Patient Order</h2>
+
+<div id="patient"></div>
+
+<h3>Menu</h3>
+
+<div id="menu"></div>
+
+<button onclick="order()">Order</button>
+
+<script>
+
+const params=new URLSearchParams(location.search)
+const bed=params.get("bed")
+
+let patient=null
+let menu=[]
+let cart=[]
+
+async function load(){
+
+ const p=await fetch("/api/bed/"+bed)
+ patient=await p.json()
+
+ document.getElementById("patient").innerHTML=patient.name||"No patient"
+
+ const m=await fetch("/api/menu")
+ menu=await m.json()
+
+ menu.forEach(i=>{
+  const b=document.createElement("button")
+  b.innerText=i.name
+  b.onclick=()=>cart.push({menu_id:i.id,qty:1})
+  document.getElementById("menu").appendChild(b)
+ })
+
+}
+
+async function order(){
+
+ await fetch("/api/orders",{
+ method:"POST",
+ headers:{"Content-Type":"application/json"},
+ body:JSON.stringify({
+  hn:patient.hn,
+  bed_id:bed,
+  meal_date:new Date().toISOString(),
+  meal_type:"dinner",
+  items:cart
+ })
+ })
+
+ alert("ordered")
+
+}
+
+load()
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kitchen</title>
+</head>
+<body>
+
+<h2>Kitchen Orders</h2>
+
+<div id="orders"></div>
+
+<script>
+
+async function load(){
+
+ const res=await fetch("/api/orders")
+ const data=await res.json()
+
+ const el=document.getElementById("orders")
+ el.innerHTML=""
+
+ data.forEach(o=>{
+
+  const div=document.createElement("div")
+  div.innerHTML="Bed "+o.bed_id+" | "+o.meal_type
+
+  el.appendChild(div)
+
+ })
+
+}
+
+setInterval(load,3000)
+load()
+
+</script>
+
+</body>
+</html>

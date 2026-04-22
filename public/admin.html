@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+</head>
+<body>
+<h2>Admit Patient</h2>
+
+HN <input id="hn"><br>
+Name <input id="name"><br>
+Bed <input id="bed"><br>
+
+<button onclick="admit()">Admit</button>
+
+<script>
+async function admit(){
+
+ await fetch("/api/admit",{
+ method:"POST",
+ headers:{"Content-Type":"application/json"},
+ body:JSON.stringify({
+  hn:hn.value,
+  an:"",
+  name:name.value,
+  age:50,
+  gender:"ชาย",
+  admit_date:new Date().toISOString(),
+  discharge_date:"",
+  ward_id:"W1",
+  room_id:"R1",
+  bed_id:bed.value
+ })
+ })
+
+ alert("saved")
+
+}
+</script>
+
+</body>
+</html>
